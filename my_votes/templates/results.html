@@ -1,0 +1,46 @@
+{% include 'partial/header.html' %}
+  <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <canvas id="barChart" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data for the bar graph
+        var data = {
+            labels: [{% for items in items %} '{{items.title}}', {% endfor %}],
+            datasets: [{
+                label: 'Bar Graph Of Voters',
+                data: [{% for items in items %} '{{items.total_vote}}', {% endfor %}], // Data values for each category
+                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)'],
+                borderWidth: 1
+            }]
+        };
+
+        // Options for configuring the chart
+        var options = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+
+        // Create the bar chart
+        var ctx = document.getElementById('barChart').getContext('2d');
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options
+        });
+    </script>
+{% for items in items %}
+<h2>Total Votes of {{items.title}} is: <b>{{items.total_vote}}</b></h2>
+{% endfor %}
+<h2>Thanks For Your Voting</h2>
+{% include 'partial/footer.html' %}
